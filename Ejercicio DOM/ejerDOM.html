@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Ejercicio DOM</title>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+
+</head>
+<body>
+<div id="origen">
+	<ul>
+		<li>Uno</li>
+		<li>Dos</li>
+		<li>Tres</li>
+	</ul>
+</div>
+<div id="destino"> <ul></ul> </div> <br>
+
+<label>Copiar</label><input type="checkbox" id="check">
+
+
+
+
+<script>
+
+
+var oUl= document.body.querySelector("ul");
+var oUlAbajo= document.body.querySelectorAll("ul")[1];
+
+oUl.addEventListener("click", moverDrch,false);
+oUlAbajo.addEventListener("click", moverIzq,false);
+
+
+
+
+
+
+//newNode = node.cloneNode(bool)
+
+function moverDrch(oEvento)
+{
+
+	oCheck=document.getElementById("check").checked;
+
+	if (oCheck==false)
+	{
+		var oE= oEvento || window.event;
+		if (oE.target.nodeName=="LI")//<> de undefined 
+		{
+			var oUlAbajo= document.body.querySelectorAll("ul")[1];
+			oUlAbajo.appendChild(oE.target);
+		}
+	}
+	else
+	{
+		var oE= oEvento || window.event;
+		if (oE.target.nodeName=="LI")//<> de undefined 
+		{
+			var oUlAbajo= document.body.querySelectorAll("ul")[1];
+			newNode = oE.target.cloneNode(oCheck);
+			oUlAbajo.appendChild(newNode);
+
+		}
+	}
+}
+
+function moverIzq(oEvento)
+{
+	var oE= oEvento || window.event;
+	if (oE.target.nodeName=="LI")//<> de undefined 
+	{
+		var oUl= document.body.querySelector("ul");
+		oUl.appendChild(oE.target);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+var oUl= document.body.querySelector("ul");
+var oUlAbajo= document.body.querySelectorAll("ul")[1];
+
+oUl.addEventListener("click", moverDrch,false);
+oUlAbajo.addEventListener("click", moverIzq,false);
+
+var oCheck= document.body.querySelector("input").value;
+
+
+
+
+
+//newNode = node.cloneNode(bool)
+
+function moverDrch(oEvento)
+{
+	var oE= oEvento || window.event;
+	if (oE.target.nodeName=="LI")//<> de undefined 
+	{
+		var oUlAbajo= document.body.querySelectorAll("ul")[1];
+		oUlAbajo.appendChild(oE.target);
+	}
+}
+
+function moverIzq(oEvento)
+{
+	var oE= oEvento || window.event;
+	if (oE.target.nodeName=="LI")//<> de undefined 
+	{
+		var oUl= document.body.querySelector("ul");
+		oUl.appendChild(oE.target);
+	}
+}
+
+*/
+
+
+</script>
+
+</body>
+</html>

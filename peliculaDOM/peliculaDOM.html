@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Ejercicio Peliculas DOM</title>
+<style>
+body
+{
+	background-color: aqua;
+}
+
+#contenedor
+{
+	margin: 10%;
+	width: 50%;
+	height: 400px;
+}
+
+#pelicula1, #pelicula2, #pelicula3, #pelicula4
+{
+	border: 2px solid red;
+	width: 20%;
+	float: left;
+	margin-left: 4%;
+	margin-top: 4%;
+	height: 45%;
+	
+}
+
+img
+{
+	width: 100%;
+	height: 100%
+}
+
+#mensaje
+{
+	background-color: orange;
+	position: relative;
+	top: 50%;
+	width: 40%;	
+
+}
+
+
+</style>
+	
+</head>
+<body>
+
+<div id="contenedor">
+	<div id="mensaje"></div>
+	<div id="pelicula1" name="pelicula1" data-text="Hulk anda suelto por la ciudad desatando el caos."><img src="hulk.jpg" alt="hulk" id="peli1"/></div>
+	<div id="pelicula2" name="pelicula2" data-text="Thor debe parar los diabólicos planes de su hermano Loki."><img src="thor.jpg" alt="thor" id="peli2"/></div>
+	<div id="pelicula3" name="pelicula3" data-text="Un grupo de heroes se unen para hacer frente a una grave amenaza que pone el planeta en peligro." ><img src="vengadore.jpg" alt="vengadore" id="peli3"/></div>
+	<div id="pelicula4" name="pelicula4" data-text="El mundo descubre la existencia de los mutantes y se desata una feroz batalla entre ámbos bandos."><img src="xmen.jpg" alt="xmen" id="peli4"/></div>
+</div>
+
+<script type="text/javascript">
+var peli1= document.getElementById("pelicula1");
+var peli2= document.getElementById("pelicula2");
+var peli3= document.getElementById("pelicula3");
+var peli4= document.getElementById("pelicula4");
+
+document.body.addEventListener("mouseover", mostrarDatos);
+
+
+function mostrarDatos(oEvento)
+{
+	var oE = oEvento || window.event;
+	var mensaje= document.getElementById("mensaje");
+	var bReseteo=false;
+
+	if (oE.target.tagName=="IMG")
+		{
+			mensaje.style.display='block';
+		}
+	else 
+		{
+			mensaje.style.display='none';
+			bReseteo=false;
+
+		}
+
+	if (oE.target.id=="peli1")
+		{
+		if (bReseteo==false)
+			{
+			 mensaje.style.left='20%';
+			 var sipnosis=peli1.dataset.text; 
+			 mensaje.innerHTML=sipnosis;
+			 bReseteo=true;
+			}
+		}
+		else if (oE.target.id=="peli2")
+		{
+			if (bReseteo==false)
+			{
+			 mensaje.style.left='45%';
+			 var sipnosis=peli2.dataset.text; 
+			 mensaje.innerHTML=sipnosis;
+			 bReseteo=true;
+			}
+		}
+		else if (oE.target.id=="peli3")
+		{
+		 	if (bReseteo==false)
+			{
+			 mensaje.style.left='65%';
+			 var sipnosis=peli3.dataset.text; 
+			 mensaje.innerHTML=sipnosis;
+			 bReseteo=true;
+			} 
+		}
+		else if (oE.target.id=="peli4")
+		{
+			if (bReseteo==false)
+			{
+			 mensaje.style.left='95%';
+			 var sipnosis=peli4.dataset.text; 
+			 mensaje.innerHTML=sipnosis;
+			 bReseteo=true;
+			}
+		}
+	
+}
+
+	
+
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Paint version Salesman</title>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+
+</head>
+<body>
+<div id="panel">
+	<h2>Panel</h2>
+	<table>
+	<tr><td>Tamaño del pincel:</td>
+		<td><select name="tamaño" id="tamaño">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7">7</option>
+		<option value="8">8</option>
+		<option value="9">9</option>
+		<option value="10">10</option>
+		</select></td>
+	</tr>
+	<tr><td>Color del pincel:</td>
+		<td><input type="color" id="color" value="#ff0000" style="width:100%";/></td></tr>
+	<tr><td>Forma del pincel:</td>
+		<td><select name="forma" id="forma">
+		<option value="circulo">circulo</option>
+		<option value="cuadrado">cuadrado</option>
+		</select></td></tr>
+	<tr>
+		<td>Acción:</td>
+		<td><select name="accion" id="accion">
+		<option value="pintar">pintar</option>
+		<option value="borrar">borrar</option>
+	</select></td></tr>
+	</table>
+</div>
+	
+<div id="lienzo">
+	<h2>Lienzo</h2>
+	<canvas id="myCanvas" width="880" height="600" style="cursor: url('recursos/pencil.png'),default"</canvas>
+	
+</div>
+
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+canvas.addEventListener("mousemove",pintar,false);
+canvas.addEventListener("mousedown",pulsar,false);
+canvas.addEventListener("mouseup",soltar,false);
+document.body.addEventListener("mouseup",soltar,false); //para que si sueltas el click fuera del canva del raton se ponga el pulsafo a false
+
+var pulsado=false;
+
+function pulsar()
+{
+	pulsado=true;
+}
+
+function soltar()
+{
+	pulsado=false;
+}
+
+
+function pintar(oEvento)
+{
+	sAccion= document.getElementById("accion").value;
+	if (pulsado==true)
+	{
+ 
+	  	if (sAccion=="pintar")
+		{
+			iTamaño= (document.getElementById("tamaño").value)*5;
+			rgbColor= document.getElementById("color").value;
+			sForma= document.getElementById("forma").value;
+
+			darforma(iTamaño,rgbColor, sForma,oEvento);
+	  	}
+	  	else
+	  	{
+	  		iTamaño= (document.getElementById("tamaño").value)*5;
+			rgbColor= "rgb(239, 239, 239)";
+			sForma= document.getElementById("forma").value;
+
+			darforma(iTamaño,rgbColor, sForma, oEvento);
+	  	}
+ 	}
+
+}
+
+
+
+function darforma(iTamaño,rgbColor, sForma, oEvento)
+{
+	var oE = oEvento || window.event;
+	var canvas = document.getElementById("myCanvas");
+	var ClientRect = canvas.getBoundingClientRect(); //te devuelve las coordenadas del canvas 
+		/*El valor devuelto es un objeto DOMRect que es la unión de los rectángulos devueltos por getClientRects() para el elemento, es decir, las CSS border-boxes asociadas con el elmento. El resultado es el rectángulo más pequeño que contiene al elemento completo, con las propiedades de solo lectura left, top, right, bottom, x, y, width, and height describiendo la border-box total en pixels. Excepto width and height las propiedades son relativas a la esquina superior izquierda (top-left) de la ventana.*/
+
+	posicionX= Math.round(oE.clientX - ClientRect.left);
+	posicionY= Math.round(oE.clientY - ClientRect.top);
+
+
+	//lo necesario para pintar un circulo en un canvas
+	ctx.beginPath(); //abre lo que permite pintar
+
+	 if (sForma=="circulo")
+	 {
+	 	ctx.arc(posicionX, posicionY,iTamaño,0,2*Math.PI); //que es lo que quiere dibujar arc es un arco, la posición, el tamaño, y la forma de la figura que es en radian
+	 }
+	 else
+	 {
+	 	ctx.rect(posicionX,posicionY,iTamaño,iTamaño);
+	 }
+
+	ctx.fillStyle = rgbColor; //el color que va a tener
+	ctx.fill(); //rellena el objeto que dibuja, en esete caso un arc
+	ctx.closePath(); //cierra lo que permite pintar
+	
+}
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Ejercicio Select</title>
+
+<style type="text/css">
+	div
+	{
+		width: 200px;
+	    height: 200px;
+		float:left;
+		border: 2px solid red;
+	}
+</style>
+</head>
+<body>
+
+<div id=”origen”>
+<ul>
+	    <li>Uno</li>
+		<li>Dos</li>
+		<li>Tres</li>
+</ul>
+</div>
+<div id=”destino”>
+		<ul></ul>
+</div>
+
+<label>Duplicar </label>
+<input type="checkbox" name="clonar" id="clonar"/>
+
+<script type="text/javascript">
+var bClonar=false;
+
+var oUl1= document.querySelectorAll("ul")[0];
+oUl1.addEventListener("click", pasarDrch, false);
+
+var oUl2= document.querySelectorAll("ul")[1];
+oUl2.addEventListener("click", pasarIzq, false);
+
+
+function clonacion()
+{
+	
+    var bEstado=document.querySelector("input");	
+
+ if (bEstado.checked == true)
+ {
+ 	bClonar=true;
+ }
+ else
+ {
+ 	bClonar=false;
+ }
+}
+
+
+function pasarDrch(oEvento)
+{
+	clonacion();
+	var oE = oEvento || window.event;
+		if (oE.target.nodeName=="LI")
+		{
+			var oUl2= document.querySelectorAll("ul")[1];
+
+			if (bClonar==false)
+			{
+				oUl2.appendChild(oE.target);
+			}
+			else
+			{
+				newNode = oE.target.cloneNode(true); 
+				oUl2.appendChild(newNode);
+			}
+		}
+}
+
+	
+function pasarIzq(oEvento)
+{
+	clonacion();
+	var oE = oEvento || window.event;
+	if (oE.target.nodeName=="LI")
+	{
+		var oUl1= document.querySelector("ul");
+		if (bClonar==false)
+		{
+			oUl1.appendChild(oE.target);
+		}
+		else
+		{
+			newNode = oE.target.cloneNode(true); 
+			oUl1.appendChild(newNode);
+		}
+
+	}
+}
+
+
+
+</script>
+
+</body>
+</html>

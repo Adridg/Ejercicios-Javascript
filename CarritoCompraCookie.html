@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Ejercicio Select</title>
+</head>
+<body>
+ <form action="#" method="post" name="frmCarrito" id="frmSelect">
+<table>
+<tr>
+<td><label>Producto:</label></td><td><input type="text" name="txtProducto" id="txtProducto"/></td>
+</tr><tr>
+<td><label>Cantidad:</label></td><td><input type="text" name="txtCantidad" id="txtCantidad"/></td>
+</tr><tr><td></td><td>
+		<input type="button" name="btnComprar" id="btnComprar" value="Comprar"/> </td>
+</tr>
+</table>
+
+<input type="button" name="verCarrito" id="verCarrito" value="Ver carrito"/>
+<input type="button" name="vaciarCarrito" id="vaciarCarrito" value="Vaciar Carrito"/>
+
+</form>
+
+<div id= "carrito">
+	<p id="tablaCarrito"></p>
+</div>
+
+<script type="text/javascript">
+
+var btnComprarPulsado= document.frmCarrito.btnComprar;
+btnComprarPulsado.addEventListener("click", comprar, false);
+
+var btnListarPulsado= document.frmCarrito.verCarrito;
+btnListarPulsado.addEventListener("click", listarCarrito, false);
+
+var btnVaciarPulsado= document.frmCarrito.vaciarCarrito;
+btnVaciarPulsado.addEventListener("click", vaciarCarrito, false);
+
+function comprar()
+{
+	var sNombre=document.frmCarrito.txtProducto.value.trim();
+	var sCantidad= parseInt(document.frmCarrito.txtCantidad.value.trim());
+
+   var ca = document.cookie.split(';');
+   for(var i=0; i<ca.length; i++) 
+   	{
+       b= ca[i].split("=");
+       if (b[0].trim() == sNombre)
+       {
+        	sCantidad+= parseInt(getCookie(sNombre));
+       }
+    }
+
+    setCookie(sNombre, sCantidad, 30);
+
+} 
+
+function listarCarrito()
+{
+
+   var pListarProducto=document.getElementById("tablaCarrito");
+   var sTableHTML="<table><tr><th>Producto</th><th>Cantidad</th></tr>";
+   var ca = document.cookie.split(';');
+
+   if (ca!="")
+   {
+	   for(var i=0; i<ca.length; i++) 
+	   	{
+	       b= ca[i].split("=");
+	       sTableHTML+="<tr><td>"+ b[0] +"</td><td>"+ b[1] +"</td></tr>";
+	    }
+
+	    sTableHTML+="</table>";
+		 pListarProducto.innerHTML=sTableHTML;
+	}
+  else
+  {
+    pListarProducto.innerHTML="Cesta vacia";
+  }
+	
+}
+
+function vaciarCarrito()
+{
+   var ca = document.cookie.split(';');
+   for(var i=0; i<ca.length; i++) 
+   	{
+      b= ca[i].split("=");   	
+   	  deleteCookie(b[0]);
+    }
+}
+
+/**************************************************************************************************************/
+//funciones cookies
+
+function setCookie(cname, cvalue, exdays) { // cookie name, cookie value, dias de validez
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;  // Aqui es donde se escribe la cookie
+}
+
+
+function getCookie(cname) { // cookie name
+    var name = cname + "=";
+    var ca = document.cookie.split(';'); // Splitea los pares key (clave) / value (valor) name1=valor1;name2=valor2
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+    }
+    return "";
+}
+
+function deleteCookie(cname) { // cookie name
+    document.cookie = cname + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";  // Así es como se borra una cookie  
+}
+
+
+
+</script>
+
+</body>
+</html>

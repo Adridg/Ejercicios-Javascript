@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<title>Ejercicio Select</title>
+</head>
+<body>
+ <form action="#" method="post" name="frmSelect" id="frmSelect">
+ <label> Option </label> <input type="text" name="txtCiudad" id="txtCiudad"/> 
+ <input type="button" name="btnAgregar" id="btnAgregar" value="+"/>
+ <br>
+<table>
+<tr> 
+<td>
+<select name="SelectCiudadIzq" multiple> </select>
+</td>
+<td>
+<input type="button" name="btonEnviarDrch" id="btonEnviarDrch" value="-->"/> <br>
+<input type="button" name="btonEnviarIzq" id="btonEnviarIzq" value="<--"/>
+</td>
+<td>
+<select name="SelectCiudadDrch" multiple></select>
+</td>
+<td>
+<input type="button" name="btonResetear" id="btonResetear" value="Vaciar"/>
+</td>
+</tr>
+</table>
+
+<input type="text" name="txtNombre" id="txtNombre" disabled><br>
+<input type="text" name="txtValor" id="txtValor" disabled><br>
+</form>
+
+<script type="text/javascript">
+	var sNombres=[];
+	var sCodigos=[];
+
+
+
+
+	var objSeleccionado= document.frmSelect.SelectCiudadIzq;
+	objSeleccionado.addEventListener("click", objPulsado, false);
+
+	var objSeleccionadoDrch= document.frmSelect.SelectCiudadDrch;
+	objSeleccionadoDrch.addEventListener("click", objPulsadoDrch, false);
+
+
+	function objPulsado() 
+	{
+		var nombre= document.getElementById("txtNombre");
+		var valor= document.getElementById("txtValor");
+
+		var sValoresCiudades="";
+		var sNombresCiudades="";
+		for (var i = 0; i < frmSelect.SelectCiudadIzq.options.length; i++)
+		{
+			if (frmSelect.SelectCiudadIzq.options[i].selected)
+			 {
+			 	sValoresCiudades+= frmSelect.SelectCiudadIzq.options[i].value+" ";
+			 	sNombresCiudades+= frmSelect.SelectCiudadIzq.options[i].innerHTML+" ";
+			 } 
+		}
+
+		nombre.value=sNombresCiudades;
+		valor.value= sValoresCiudades;
+	}
+
+function objPulsadoDrch() 
+	{
+		var nombre= document.getElementById("txtNombre");
+		var valor= document.getElementById("txtValor");
+
+		var sValoresCiudades="";
+		var sNombresCiudades="";
+		for (var i = 0; i < frmSelect.SelectCiudadDrch.options.length; i++)
+		{
+			if (frmSelect.SelectCiudadDrch.options[i].selected)
+			 {
+			 	sValoresCiudades+= frmSelect.SelectCiudadDrch.options[i].value+" ";
+			 	sNombresCiudades+= frmSelect.SelectCiudadDrch.options[i].innerHTML+" ";
+			 } 
+		}
+
+		nombre.value=sNombresCiudades;
+		valor.value= sValoresCiudades;
+	}
+
+
+	var oAgregar= document.frmSelect.btnAgregar;
+	oAgregar.addEventListener("click", addCiudad, false);
+
+	function addCiudad ()
+	{
+
+		var sNombreElegido= document.frmSelect.txtCiudad.value.trim();
+		var sCodigoOtorgado=  sNombreElegido.substring(0, 3).trim();
+
+		if (sNombreElegido !="")
+		{
+			var htmlSelectIzq= document.frmSelect.SelectCiudadIzq;
+			var bRepetido=false;
+			for (var i = 0; i < sNombres.length; i++) 
+			{
+				if (sNombreElegido== sNombres[i] || sCodigoOtorgado==sCodigos[i])
+				{
+					bRepetido=true;
+				}
+			}
+
+			if (!bRepetido)
+			{
+				sNombres.push(sNombreElegido);
+				sCodigos.push(sCodigoOtorgado);
+				htmlSelectIzq.innerHTML +='<option value="'+ sCodigos[i]+'">'+sNombres[i]+ "</option>";
+				document.frmSelect.txtCiudad.value="";
+			}
+		}
+	}
+
+
+	var oBtnDerecha= document.getElementById("btonEnviarDrch");
+	oBtnDerecha.addEventListener("click", pasarCiudadDrch, false);
+
+	function pasarCiudadDrch()
+	{
+		oListaOption=[];
+		//creando otra  array para evitar array mutantes de las select
+		for (var i = 0; i < frmSelect.SelectCiudadIzq.options.length; i++)
+		{
+			 if (frmSelect.SelectCiudadIzq.options[i].selected)
+			 {
+			 	oListaOption.push(frmSelect.SelectCiudadIzq.options[i]);
+			 } 
+		}
+
+		 for (var j = 0; j <  oListaOption.length; j++) 
+			 {
+			 	//Si no se encuenta en el select de la derecha
+			 	 if(buscaOptionDerecha(oListaOption[j])==false)
+			 	 {
+			 	 	frmSelect.SelectCiudadDrch.add(oListaOption[j]); //por como esta montado el DOM, cada etiqueta genera un objeto y estos objetos no pueden estar repetido en la estructura de datos, por lo que desaparece del otro sitio automáticamente (se podría poner la instrucción del remove en la izq y no hubiera pasado nada ningún error, pero usandolo con loss conocimientos del DOM es más rápido)
+			 	 }
+			 }
+	}
+
+	function buscaOptionDerecha (oOption)
+	{
+		var bEnc=false;
+
+		for (var i=0; i<frmSelect.SelectCiudadDrch.options.length && bEnc==false ;i++)
+		{
+			if (frmSelect.SelectCiudadDrch.options[i].value== oOption.value)
+			{
+				bEnc=false;
+			}
+		}
+		return bEnc;
+	}
+
+	/*******************************************************************************************************************************/
+	var oBtnIzq= document.getElementById("btonEnviarIzq");
+	oBtnIzq.addEventListener("click", pasarCiudadIzq, false);
+
+	function pasarCiudadIzq()
+	{
+		var oListaOptionDrch=[];
+		//creando otra  array para evitar array mutantes de las select
+		for (var i = 0; i < frmSelect.SelectCiudadDrch.options.length; i++)
+		{
+			 if (frmSelect.SelectCiudadDrch.options[i].selected)
+			 {
+			 	oListaOptionDrch.push(frmSelect.SelectCiudadDrch.options[i]);
+			 }	 
+		}
+
+			 for (var j = 0; j <  oListaOptionDrch.length; j++) 
+			 {
+			 	//Si no se encuenta en el select de la derecha
+			 	 if(buscaOptionIzq(oListaOptionDrch[j])==false)
+			 	 {
+			 	 	frmSelect.SelectCiudadIzq.add(oListaOptionDrch[j]); //por como esta montado el DOM, cada etiqueta genera un objeto y estos objetos no pueden estar repetido en la estructura de datos, por lo que desaparece del otro sitio automáticamente (se podría poner la instrucción del remove en la izq y no hubiera pasado nada ningún error, pero usandolo con loss conocimientos del DOM es más rápido)
+			 	 }
+			 }
+	}
+
+	function buscaOptionIzq (oOption)
+	{
+		var bEnc=false;
+
+		for (var i=0; i<frmSelect.SelectCiudadIzq.options.length && bEnc==false ;i++)
+		{
+			if (frmSelect.SelectCiudadIzq.options[i].value== oOption.value)
+			{
+				bEnc=false;
+			}
+		}
+		return bEnc;
+	}
+
+
+	/*******************************************************************************************************************************/
+	var oResetar= document.frmSelect.btonResetear;
+	oResetar.addEventListener("click", resetearSelects, false);
+
+	function resetearSelects()
+	{
+		sNombres=[];
+		sCodigos=[];
+		var iLongitudSelecIzq= document.frmSelect.SelectCiudadIzq.options.length;
+		
+		var htmlSelectIzq= document.frmSelect.SelectCiudadIzq;
+		for (var i = 0; i < iLongitudSelecIzq; i++)
+		{
+			htmlSelectIzq.remove(0);
+		}
+
+		var iLongitudSelecdrch= document.frmSelect.SelectCiudadDrch.options.length;
+		
+		var htmlSelectdrch= document.frmSelect.SelectCiudadDrch;
+		for (var i = 0; i < iLongitudSelecdrch; i++)
+		{
+			htmlSelectdrch.remove(0);
+		}
+
+			var nombre= document.getElementById("txtNombre").value="";
+			var valor= document.getElementById("txtValor").value="";
+	}
+
+
+</script>
+
+</body>
+</html>
